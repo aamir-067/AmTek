@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
     return (
-        <div className='w-full flex justify-center items-center'>
+        <div className='w-full absolute bottom-0 flex mt-60 justify-center items-center'>
             <section className=" overflow-hidden bg-white dark:bg-gray-900  py-8">
                 <div className="container relative z-10 mx-auto px-4">
                     <div className="-m-8 flex flex-wrap items-center justify-between">
@@ -110,6 +110,7 @@ const Footer = () => {
                     </div>
                 </div>
             </section>
+
         </div>
     )
 }
