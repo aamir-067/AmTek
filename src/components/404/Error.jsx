@@ -1,7 +1,9 @@
 import React from 'react'
+import { useNavigate, NavLink } from 'react-router-dom'
 const Error = () => {
+    const navigate = useNavigate()
     return (
-        <div className='w-full mt-40 flex justify-center items-center'>
+        <div className='w-full mt-40 min-h-screen flex justify-center'>
             <div className="py-10">
                 <div className="text-center">
                     <p className="text-base font-semibold text-black">404</p>
@@ -12,19 +14,21 @@ const Error = () => {
                         Sorry, we could'nt find the page you're looking for.
                     </p>
                     <div className="mt-4 flex items-center justify-center gap-x-3">
-                        <button
+                        <NavLink
+                            to={navigate(-1)}
                             type="button"
                             className="inline-flex items-center rounded-md border border-black px-3 py-2 text-sm font-semibold text-black shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                         >
                             {/* <ArrowLeft size={16} className="mr-2" /> */}
                             Go back
-                        </button>
-                        <button
+                        </NavLink>
+                        <NavLink
+                            to={"contact"}
                             type="button"
                             className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
                         >
                             Contact us
-                        </button>
+                        </NavLink>
                     </div>
                 </div>
             </div>
