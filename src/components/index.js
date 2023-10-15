@@ -8,4 +8,5 @@ import Shop from "./shop/Shop";
 import PreSale from "./landing/PreSale";
 import Featured from './featured/Featured'
 import FeaturedCard from './featured/FeaturedCard'
-export { NavBar, Contact, Shop, LandingPage, Featured, FeaturedCard, Error, Footer, PreSale, OurTeam };
+import AdminPage from './onlyAdmin/AdminPage'
+export { NavBar, AdminPage, Contact, Shop, LandingPage, Featured, FeaturedCard, Error, Footer, PreSale, OurTeam };

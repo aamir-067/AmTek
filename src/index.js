@@ -4,7 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import { Contact, LandingPage, Shop, Error, OurTeam } from './components';
+import { Contact, LandingPage, Shop, AdminPage, Error, OurTeam } from './components';
+import store from './app/store';
+import { Provider } from 'react-redux'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,13 +20,16 @@ const router = createBrowserRouter(
       <Route path='contact' element={<Contact />} />
       <Route path='shop' element={<Shop />} />
       <Route path='about' element={<OurTeam />} />
+      <Route path="secret" element={<AdminPage />} />  {/* under development page*/}
       <Route path='*' element={<Error />} />
     </Route>
   ))
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 const Footer = () => {
     return (
         <div id='gd2' className='w-full fixed bottom-0 flex mt-60 justify-center items-center'>
-            <section className="w-full overflow-hidden dark:bg-gray-900  py-8 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px]">
+            <section className="w-full overflow-hidden dark:bg-gray-900 bg-white  py-8 shadow-[rgba(13,_38,_76,_0.19)_0px_9px_20px]">
                 <div className="container relative z-10 mx-auto px-4">
                     <div className="-m-8 flex flex-wrap items-center justify-between">
                         <div className="w-auto p-8">
