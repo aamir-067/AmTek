@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     uint256 private _nextTokenId;
-    uint public constant maxSupply = 3;
+    uint public constant maxSupply = 9998;
     uint nftPrice = 0.001 ether;
 
     constructor() ERC721("AmTek", "MTK") Ownable(msg.sender) {}
@@ -52,7 +52,7 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
         started,
         ended
     }
-    preSale tokenPreSale = preSale.notStarted;
+    preSale public tokenPreSale = preSale.notStarted;
 
     function startPreSale() public onlyOwner {
         require(tokenPreSale == preSale.notStarted, "pre Sale ended");
@@ -68,7 +68,7 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     }
 
     // ================ specialMinting ===============
-    mapping(address => bool) specialPersons;
+    mapping(address => bool) public specialPersons;
 
     function specialMint() public payable {
         require(specialPersons[msg.sender], "you are not in list");

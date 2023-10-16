@@ -3,17 +3,26 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { initWeb3 } from '../../utils/initializeWeb3Api';
 import { reInitWeb3 } from '../../reducers/web3ApiReducer';
+import { getMaxSupply, getTotalSupply } from '../../utils/getSupply';
+import { setSupply } from '../../reducers/supplyReducer';
 
 const NavBar = () => {
     const [menuToggled, setMenuToggled] = React.useState(false);
     const dispatch = useDispatch();
-
+    // const [tokenSupply, setTokenSupply] = React.useState({});
+    // const tokenSupply = useSelector(state => state.tokenSupply);
     const { web3Api } = useSelector(state => state);
-    const handleWalletConnect = () => {
+
+    const handleWalletConnect = async () => {
         if (web3Api?.signer) {  // means disconnect the wallet
             dispatch(reInitWeb3({ signer: null, contract: null, provider: null }));
         } else {
-            initWeb3();
+            await initWeb3();
+
+            // get the supply.
+            const maxSupply = await getMaxSupply();
+            const totalSupply = await getTotalSupply();
+            await dispatch(setSupply({ totalSupply, maxSupply, currentToken: 0 }))
         }
     }
 
@@ -39,7 +48,7 @@ const NavBar = () => {
                     </div>
 
                     {/* toggeled menu */}
-                    <div id={menuToggled ? "gd3" : ""} className={`items-center ${menuToggled ? "" : "hidden"} absolute md:relative top-16  md:top-0 left-0 justify-between w-full md:flex md:w-auto md:order-1`}>
+                    <div id={menuToggled ? "gd3" : ""} className={`bg-white dark:bg-slate-900 dark:text-slate-100 text-slate-900 items-center ${menuToggled ? "" : "hidden"} absolute md:relative top-16  md:top-0 left-0 justify-between w-full md:flex md:w-auto md:order-1`}>
                         <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                             <li>
                                 <NavLink onClick={() => { setMenuToggled(!menuToggled) }} to="" className={({ isActive }) => `block py-2 pl-3 ${isActive ? "text-blue-700" : ""} pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>Home</NavLink>
