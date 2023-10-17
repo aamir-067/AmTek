@@ -52,11 +52,13 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
         started,
         ended
     }
+    event PreSaleUpdate(preSale);
     preSale public tokenPreSale = preSale.notStarted;
 
     function startPreSale() public onlyOwner {
         require(tokenPreSale == preSale.notStarted, "pre Sale ended");
         tokenPreSale = preSale.started;
+        emit PreSaleUpdate(tokenPreSale);
     }
 
     function endPreSale() public onlyOwner {
@@ -65,6 +67,7 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
             "pre sale ended or not yet started"
         );
         tokenPreSale = preSale.ended;
+        emit PreSaleUpdate(tokenPreSale);
     }
 
     // ================ specialMinting ===============
@@ -81,8 +84,11 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     }
 
     // ========== change nft Price ==============
+    event PriceChange(uint);
+
     function changePrice(uint _price) public onlyOwner {
         nftPrice = _price;
+        emit PriceChange(_price);
     }
 
     // The following functions are overrides required by Solidity.

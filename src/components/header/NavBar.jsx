@@ -5,13 +5,19 @@ import { initWeb3 } from '../../utils/initializeWeb3Api';
 import { reInitWeb3 } from '../../reducers/web3ApiReducer';
 import { getMaxSupply, getTotalSupply } from '../../utils/getSupply';
 import { setSupply } from '../../reducers/supplyReducer';
+import { ethers } from 'ethers';
 
 const NavBar = () => {
     const [menuToggled, setMenuToggled] = React.useState(false);
     const dispatch = useDispatch();
-    // const [tokenSupply, setTokenSupply] = React.useState({});
-    // const tokenSupply = useSelector(state => state.tokenSupply);
     const { web3Api } = useSelector(state => state);
+
+
+    // to check for admin
+    const [isAdmin, setIsAdmin] = React.useState(false);
+    React.useEffect(() => {
+        '0x575cA73E642983fF8818F0cb0Fa692A788Bc45A4' ? setIsAdmin(true) : setIsAdmin(false);
+    }, [])
 
     const handleWalletConnect = async () => {
         if (web3Api?.signer) {  // means disconnect the wallet
@@ -57,7 +63,7 @@ const NavBar = () => {
                                 <NavLink onClick={() => { setMenuToggled(!menuToggled) }} to="shop" className={({ isActive }) => `block py-2 pl-3 ${isActive ? "text-blue-700" : ""} pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>Shop</NavLink>
                             </li>
                             <li>
-                                <NavLink onClick={() => { setMenuToggled(!menuToggled) }} to="contact" className={({ isActive }) => `block py-2 pl-3 ${isActive ? "text-blue-700" : ""} pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>Contact Us</NavLink>
+                                <NavLink onClick={() => { setMenuToggled(!menuToggled) }} to='contact' className={({ isActive }) => `block py-2 pl-3 ${isActive ? "text-blue-700" : ""} pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>Contact Us</NavLink>
                             </li>
                             <li>
                                 <NavLink onClick={() => { setMenuToggled(!menuToggled) }} to="about" className={({ isActive }) => `block py-2 pl-3 ${isActive ? "text-blue-700" : ""} pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700`}>About Us</NavLink>

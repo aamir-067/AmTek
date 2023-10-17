@@ -1,16 +1,17 @@
 import React from 'react'
 import { Featured } from '../index'
 import video from '../../pics/featuredVideo.mp4';
-import { buyNft } from '../../utils/buyNft';
+import { buyNft, buySpecialNft } from '../../utils/buyNft';
 import PopUp from './PopUp';
 import { getTotalSupply } from '../../utils/getSupply';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSupply } from '../../reducers/supplyReducer';
 import SpecialPopUp from './SpecialPopUp';
+import { checkSpecialPerson } from '../../utils/adminInteraction';
 
 const Shop = () => {
     const [isDone, setIsDone] = React.useState(false);  // for mint token popup
-    const [specialPopup, setSpecialPopup] = React.useState(true);  // for special mini enable confirmation popup
+    const [specialPopup, setSpecialPopup] = React.useState(false);  // for special mini enable confirmation popup
     const dispatch = useDispatch();
     const { tokenSupply, web3Api } = useSelector(state => state);
     console.log(tokenSupply, web3Api.signer);
@@ -21,10 +22,22 @@ const Shop = () => {
         // get the total supply it will be your current token id.
         if (!res) return;
         const currentToken = await getTotalSupply();
-        await dispatch(setSupply({ ...tokenSupply, currentToken }))
+        dispatch(setSupply({ ...tokenSupply, currentToken: currentToken - 1 }))  /* it shows the next token id so i decrement it for current */
         setIsDone(true);
 
     };
+    const handleSpecialMint = async () => {
+        const isSpecialPerson = await checkSpecialPerson({ _peer: web3Api.signer.address });
+        if (isSpecialPerson) {
+            const res = await buySpecialNft();
+            if (!res) return;
+            const currentToken = await getTotalSupply();
+            dispatch(setSupply({ ...tokenSupply, currentToken: currentToken - 1 }))  // it shows the next token id so i decrement it for current
+            setIsDone(true);
+        } else {
+            setSpecialPopup(true);
+        }
+    }
     return (
         <div className='w-full mt-10'>
             <div className='w-full flex flex-col justify-between items-center'>
@@ -42,8 +55,8 @@ const Shop = () => {
                     <div className='w-full flex flex-col md:flex-row flex-wrap justify-evenly items-center'>
                         {tokenSupply.currentToken !== 0 && <button onClick={() => setIsDone(prev => !prev)} className=' text-blue-500 text-sm cursor-pointer hover:text-blue-700'>see my mint details</button>}
                         {isDone && <PopUp setIsDone={setIsDone} />}
-                        {web3Api.signer && <button onClick={() => setSpecialPopup(prev => !prev)} className=' text-blue-500 text-sm cursor-pointer hover:text-blue-700'>I am in special minting</button>}
-                        {specialPopup && <SpecialPopUp text={'loremipsum doller'} heading={'lorem iopus'} setSpecialPopup={setSpecialPopup} />}
+                        {web3Api.signer && <button onClick={() => handleSpecialMint()} className=' text-blue-500 text-sm cursor-pointer hover:text-blue-700'>I am in special minting</button>}
+                        {specialPopup && <SpecialPopUp setSpecialPopup={setSpecialPopup} />}
                     </div>
                 </div>
             </div>
