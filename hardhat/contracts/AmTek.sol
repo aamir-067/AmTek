@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     uint256 private _nextTokenId;
     uint public constant maxSupply = 9998;
-    uint nftPrice = 0.001 ether;
+    uint public nftPrice = 0.001 ether;
 
     constructor() ERC721("AmTek", "MTK") Ownable(msg.sender) {}
 
@@ -22,6 +22,11 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     }
 
     function _baseURI() internal pure override returns (string memory) {
+        return
+            "https://ipfs.io/ipfs/QmPMc4tcBsMqLRuCQtPmPe84bpSjrC3Ky7t3JWuHXYB4aS/";
+    }
+
+    function getUri() public pure returns (string memory) {
         return
             "https://ipfs.io/ipfs/QmPMc4tcBsMqLRuCQtPmPe84bpSjrC3Ky7t3JWuHXYB4aS/";
     }
@@ -52,8 +57,14 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
         started,
         ended
     }
+    uint public preSaleEndTime;
+
     event PreSaleUpdate(preSale);
     preSale public tokenPreSale = preSale.notStarted;
+
+    function schedulePreSale(uint _time) public onlyOwner {
+        preSaleEndTime = block.timestamp + _time;
+    }
 
     function startPreSale() public onlyOwner {
         require(tokenPreSale == preSale.notStarted, "pre Sale ended");
@@ -65,6 +76,10 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
         require(
             tokenPreSale == preSale.started,
             "pre sale ended or not yet started"
+        );
+        require(
+            block.timestamp >= preSaleEndTime,
+            "Cant End Pre-sale right now"
         );
         tokenPreSale = preSale.ended;
         emit PreSaleUpdate(tokenPreSale);
@@ -89,6 +104,11 @@ contract AmTek is ERC721, ERC721Pausable, Ownable, ERC721Burnable {
     function changePrice(uint _price) public onlyOwner {
         nftPrice = _price;
         emit PriceChange(_price);
+    }
+
+    // =========== withdraw amount onlyDeveloper ===========
+    function withdrawBalance() public onlyOwner {
+        payable(msg.sender).transfer(address(this).balance);
     }
 
     // The following functions are overrides required by Solidity.

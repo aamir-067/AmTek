@@ -9,6 +9,7 @@ const nftPriceSlice = createSlice({
     reducers: {
         setNftPrice: (state, action) => {
             state.price = action.payload.price;
+            console.log("Price changed in reducer ==> ", state.price, action.payload.price);
         }
     }
 });

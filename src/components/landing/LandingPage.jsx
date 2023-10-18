@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { PreSale } from '../index';
+import { useSelector } from 'react-redux';
+import store from '../../app/store';
 
 const LandingPage = () => {
-
+    let preSaleStatus;
+    useEffect(() => {
+        preSaleStatus = store.getState().preSaleStatus;
+    }, []);
+    console.log("pre-sale schedule time in landing page", preSaleStatus?.scheduleTime);
     return (
         <div className='w-full mt-32 min-h-screen flex justify-center'>
             <div className='w-8/12'>
@@ -11,7 +17,7 @@ const LandingPage = () => {
                 <p className='font_primary text-gray-900 text-center dark:text-gray-100 md:text-lg mt-14'>Join us in revolutionizing the art world as we know it. Our innovative platform is designed to transform your doodles into unique NFTs. This transformation process is not just about digitization, but it’s about giving a new dimension to your creativity and bringing a paradigm shift in how art is perceived and valued.</p>
 
                 {/* pre sale countdown */}
-                <PreSale time={3456000} />
+                <PreSale time={!preSaleStatus?.scheduleTime ? 0 : preSaleStatus?.scheduleTime} />
 
 
                 <div className='w-full flex justify-center items-center mt-16'>

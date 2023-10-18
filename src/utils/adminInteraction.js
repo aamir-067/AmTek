@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 import store from "../app/store";
+import { setPreSaleStatue } from "../reducers/preSaleReducer";
 
 export const getPreSaleStatus = async () => {
     const { web3Api } = store.getState();
@@ -23,10 +24,28 @@ export const getPreSaleStatus = async () => {
 
 export const schedulePreSale = async ({ time }) => {
     // store the presale time.
-    setTimeout(async () => {
-        const res = await startPreSale();
-        return res;
-    }, time);
+    const { web3Api } = store.getState();
+    try {
+        if (web3Api) {
+            const res = await web3Api.contract.schedulePreSale(time);
+            await res.wait();
+            console.log('pre sale scheduled', res);
+            // update the schedule time
+            const { preSaleStatus } = store.getState();
+            store.dispatch(setPreSaleStatue({ scheduleTime: time, ...preSaleStatus }));
+            setTimeout(async () => {
+                const res = await startPreSale();
+                return res;
+            }, time);
+
+        } else {
+            console.error('please connect to metamask');
+            return false;
+        }
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
 }
 
 export const startPreSale = async () => {
@@ -91,6 +110,7 @@ export const checkSpecialPerson = async ({ _peer }) => {
     try {
         if (web3Api.signer) {
             const res = await web3Api.contract.specialPersons(_peer);
+            console.log('check special person response ==> ', res);
             return res;
         } else {
             console.error('please connect to metamask');
@@ -102,19 +122,21 @@ export const checkSpecialPerson = async ({ _peer }) => {
     }
 }
 
-export const getContractBalance = async ({ address }) => {
+export const getContractBalance = async () => {
     const { web3Api } = store.getState();
     try {
         if (web3Api.signer) {
-            const res = await web3Api.provider.getBalance(address);
+            const res = await web3Api.provider.getBalance(web3Api.contract.target);
+            console.log('contract address ==>', web3Api.contract.target);
+            console.log('contract balance ==> ', ethers.toNumber(res));
             return ethers.formatEther(res);
         } else {
             console.error('please connect to metamask');
-            return false;
+            return 'unknown';
         }
     } catch (e) {
         console.error(e);
-        return false;
+        return 'unknown';
     }
 }
 
@@ -124,4 +146,22 @@ export const getContractBalance = async ({ address }) => {
 
 export const getMintingStatus = async () => {
 
+}
+
+export const changeMintPrice = async ({ price }) => {
+    const { web3Api } = store.getState();
+    try {
+        if (web3Api.signer) {
+            const res = await web3Api.contract.changePrice(ethers.parseEther(price));
+            await res.wait();
+            console.log('mint price changed', res);
+            return true;
+        } else {
+            console.error('please connect to metamask');
+            return false;
+        }
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
 }

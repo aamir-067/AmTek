@@ -4,6 +4,16 @@ This is NFT minitng react appllication in which you can mint the nft (i used the
 
 ## `Project Status : NOT COMPLETED`
 
+### `Notes for next time (for admin  only) : `
+
+1. the pre-sale schedule time is updated in the store successfully but when you came to the landing page its shows the initial value.
+
+2. Some pages are not responsive
+
+3. when you update the nft price in admin page (to goto admin page localhost:3000/secret manually ) then after updating it gives runtime error called can't convert "newPriceValue" to BigInt. but it successfully updates the value in the contract . so when you reload the page it runs correctly.
+
+4. the featured NFTs pictures are not added yet add it by fetching the "generalURI/randomNumber" and then it will gives matadata then use it its name and the image URI.
+
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

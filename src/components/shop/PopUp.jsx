@@ -42,7 +42,7 @@ const PopUp = ({ setIsDone }) => {
                     <hr className='border border-black w-full mt-2' />
                     <div className='w-full flex my-6 flex-warp justify-center gap-8 items-center'>
                         <h2 className='capitalize'>Contract Address : </h2>
-                        <h2>0x298e0222Bf6B368D0882c706065e59e58ade3B53</h2>
+                        <h2>0x2255cCd55d456E467061673A27dDcA1B3092Aa46</h2>
                     </div>
                     <div className='w-full flex flex-warp justify-center gap-8 items-center'>
                         <h2 className='capitalize '>token id : </h2>
@@ -54,7 +54,7 @@ const PopUp = ({ setIsDone }) => {
                 <div className='flex justify-center'>
                     <button
                         onClick={() => {
-                            window.navigator.clipboard.writeText('0x298e0222Bf6B368D0882c706065e59e58ade3B53');
+                            window.navigator.clipboard.writeText('0x2255cCd55d456E467061673A27dDcA1B3092Aa46');
                             setIsDone(false);
                         }}
                         className="mt-4 cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"

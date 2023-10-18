@@ -11,6 +11,7 @@ const preSaleReducer = createSlice({
         setPreSaleStatue: (state, action) => {
             state.scheduleTime = action.payload.scheduleTime;
             state.status = action.payload.status;
+            console.log('preSaleStatus updated ');
         }
     }
 });
